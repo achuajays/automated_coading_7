@@ -31,3 +31,40 @@ if uploaded_file is not None:
 
             # Plot clusters
             plot_clusters(df, kmeans, labels, feature_columns)
+import streamlit as st
+from config import title, background_color, text_color
+
+st.set_page_config(page_title=title, page_icon="🌍", layout="wide")
+
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-color: {background_color};
+        color: {text_color};
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.title(title)
+
+# Sidebar for configuration
+st.sidebar.title("Configuration")
+config_title = st.sidebar.text_input("App Title", value=title)
+config_bg_color = st.sidebar.color_picker("Background Color", value=background_color)
+config_text_color = st.sidebar.color_picker("Text Color", value=text_color)
+
+# Update the config file if there are changes
+if st.sidebar.button("Save Config"):
+    with open('config.py', 'w') as f:
+        f.write(f"title = '{config_title}'
+")
+        f.write(f"background_color = '{config_bg_color}'
+")
+        f.write(f"text_color = '{config_text_color}'
+")
+    st.success("Config saved. Please restart the app to see changes.")
+
+st.write('This is a configurable Streamlit App.')
